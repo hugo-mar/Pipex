@@ -1,0 +1,59 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipex.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hugo-mar <hugo-mar@student.42lisboa.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/09/09 19:16:45 by hugo-mar          #+#    #+#             */
+/*   Updated: 2024/09/17 19:18:22 by hugo-mar         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "pipex.h"
+
+static int	handle_few_args	(int argc, char **argv, char **envp)
+{
+	int	fd;
+	if (argc == 1)
+		exit (EXIT_SUCCESS);
+	if (argc == 2)
+	{
+		fd = open (argv[1], O_RDONLY);
+		if (fd == -1)
+		{
+			perror(argv[1]);
+			exit(EXIT_FAILURE);
+		}
+		close (fd);
+		exit(EXIT_SUCCESS);
+	}
+}
+
+int	main(int argc, char **argv, char **envp)
+{
+	t_pipex_data	data;
+
+	if (argc < 3)
+		handle_few_args(argc, argv, envp);
+	data.argc = argc;
+	data.argv = argv;
+	data.envp = envp;
+	if (ft_strcmp(argv[1], "here_doc") == 0)
+	{
+		data.nbr_pipes = argc - 3;
+		data.labor_type = 1;
+	}
+	else
+	{
+		data.nbr_pipes = argc - 2;
+		data.labor_type = 0;
+	}
+	data.pipes = pipemaker(data.nbr_pipes);
+	child_labor(&data);
+	parent_pipe_setup(&data);
+	wait_for_children(&data);
+	freepipes(data.pipes, data.nbr_pipes);
+	free(data.p_ids);
+	return (data.exit_status);
+}
