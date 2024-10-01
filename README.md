@@ -1,4 +1,4 @@
-# Pipex
+# pipex
 
 This was my approach to the pipex project of school 42.
 
