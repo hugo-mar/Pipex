@@ -3,19 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   tasks1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hugo-mar <hugo-mar@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: hugo-mar <hugo-mar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 03:20:02 by hugo-mar          #+#    #+#             */
-/*   Updated: 2024/09/17 15:08:18 by hugo-mar         ###   ########.fr       */
+/*   Updated: 2024/09/26 13:02:26 by hugo-mar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void	error_exit(t_pipex_data *data)
+void	error_exit(t_pipex_data *data, int pipe_fd)
 {
 	freepipes(data->pipes, data->nbr_pipes);
 	free(data->p_ids);
+	close(pipe_fd);
 	exit(EXIT_FAILURE);
 }
 
@@ -30,17 +31,16 @@ void	task_input_regular(int index, t_pipex_data *data)
 	if (fd == -1)
 	{
 		perror(data->argv[1]);
-		close(data->pipes[index - 1][1]);
-		error_exit(data);
+		error_exit(data, data->pipes[index - 1][1]);
 	}
 	bytes_read = read(fd, buffer, sizeof(buffer));
 	while (bytes_read > 0)
 	{
 		if (write(data->pipes[index - 1][1], buffer, bytes_read) == -1)
 		{
-			perror("write to pipe");
+			perror("write");
 			close (fd);
-			error_exit(data);
+			error_exit(data, data->pipes[index - 1][1]);
 		}
 		bytes_read = read(fd, buffer, sizeof(buffer));
 	}
@@ -65,7 +65,7 @@ void	task_input_here(int index, t_pipex_data *data)
 		{
 			perror("read");
 			close(fd);
-			error_exit(data);
+			error_exit(data, data->pipes[index - 1][1]);
 		}
 		buffer[bytes_read] = '\0';
 		if (ft_strcmp(buffer, data->argv[2]) == '\n')
@@ -87,7 +87,7 @@ void	task_command_execution(int index, t_pipex_data *data)
 	close(data->pipes[index - 2][0]);
 	dup2(data->pipes[index - 1][1], STDOUT_FILENO);
 	close(data->pipes[index - 1][1]);
-	if (ft_strcmp(data->argv[1], "here_doc") == 0)
+	if (data->labor_type == 1)
 		command = ft_split(data->argv[index + 1], ' ');
 	else
 		command = ft_split(data->argv[index], ' ');

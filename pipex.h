@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hugo-mar <hugo-mar@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: hugo-mar <hugo-mar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 02:42:47 by hugo-mar          #+#    #+#             */
-/*   Updated: 2024/09/17 17:56:53 by hugo-mar         ###   ########.fr       */
+/*   Updated: 2024/09/26 13:01:52 by hugo-mar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	parent_pipe_setup(t_pipex_data *data);
 void	first_child_pipe_setup(int index, t_pipex_data *data);
 void	middle_child_pipe_setup(int index, t_pipex_data *data);
 void	last_child_pipe_setup(int index, t_pipex_data *data);
-void	error_exit(t_pipex_data *data);
+void	error_exit(t_pipex_data *data, int pipe_fd);
 void	task_input_regular(int index, t_pipex_data *data);
 void	task_input_here(int index, t_pipex_data *data);
 void	task_command_execution(int index, t_pipex_data *data);

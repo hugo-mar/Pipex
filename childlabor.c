@@ -6,7 +6,7 @@
 /*   By: hugo-mar <hugo-mar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 03:23:24 by hugo-mar          #+#    #+#             */
-/*   Updated: 2024/09/17 15:10:13 by hugo-mar         ###   ########.fr       */
+/*   Updated: 2024/09/19 02:21:43 by hugo-mar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,13 @@ void	work_assignment(int index, int class_type, t_pipex_data *data)
 {
 	if (class_type == 1)
 		task_input_regular(index, data);
-	if (class_type == 2)
+	else if (class_type == 2)
 		task_input_here(index, data);
-	if (class_type == 3)
+	else if (class_type == 3)
 		task_command_execution(index, data);
-	if (class_type == 4)
+	else if (class_type == 4)
 		task_output_regular(index, data);
-	if (class_type == 5)
+	else if (class_type == 5)
 		task_output_here(index, data);
 }
 
@@ -56,7 +56,7 @@ void	child_labor(t_pipex_data *data)
 	data->p_ids = (pid_t *) malloc (sizeof(pid_t) * (data->nbr_pipes + 1));
 	if (data->p_ids == NULL)
 	{
-		perror("malloc failed");
+		perror("malloc");
 		exit(EXIT_FAILURE);
 	}
 	i = 1;

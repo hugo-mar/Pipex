@@ -6,7 +6,7 @@
 /*   By: hugo-mar <hugo-mar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 03:15:18 by hugo-mar          #+#    #+#             */
-/*   Updated: 2024/09/14 03:16:47 by hugo-mar         ###   ########.fr       */
+/*   Updated: 2024/09/18 23:45:42 by hugo-mar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,15 @@ void	freepipes(int **pipes, size_t nbr_of_pipes)
 	size_t	i;
 
 	i = 0;
-	while (i < nbr_of_pipes)
-		free(pipes[i++]);
-	free(pipes);
+	if (pipes != NULL)
+	{
+		while (i < nbr_of_pipes)
+		{
+			if (pipes[i] != NULL)
+				free(pipes[i++]);
+		}
+		free(pipes);
+	}
 }
 
 static int	**allocatepipes(int nbr_of_pipes)
